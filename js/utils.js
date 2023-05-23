@@ -5,7 +5,9 @@ const getRandomInteger = (min, max) => {
   return Math.floor(result);
 };
 
-const delay = (ms) => new Promise((res) => setTimeout(res, ms));
+const delay = (ms) => new Promise((res) => {
+  setTimeout(res, ms);
+});
 
 const debounce = (callback, timeoutDelay) => {
   let timeoutId;

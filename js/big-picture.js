@@ -22,7 +22,7 @@ for (let i = 0; i < smallPictures.length; i++) {
     bigPictureComments.innerHTML = '';
 
     const commentsPerClick = 5;
-    let CommentsIterationCount = 0;
+    let commentsIterationCount = 0;
 
     for (let x = 0; x < getObjects[i].comments.length && x < commentsPerClick; x++) {
       const comment = bigPictureCommentsTemplate.cloneNode(true);
@@ -30,10 +30,10 @@ for (let i = 0; i < smallPictures.length; i++) {
       comment.querySelector('img').alt = getObjects[i].comments[x].name;
       comment.querySelector('.social__text').textContent = getObjects[i].comments[x].message;
       bigPictureComments.appendChild(comment);
-      CommentsIterationCount += 1;
+      commentsIterationCount += 1;
     }
 
-    bigPictureOpenCommentsCount.textContent = CommentsIterationCount;
+    bigPictureOpenCommentsCount.textContent = commentsIterationCount;
     bigPictureDescription.textContent = getObjects[i].description;
     documentBody.classList.add('modal-open');
 
@@ -50,17 +50,17 @@ for (let i = 0; i < smallPictures.length; i++) {
     });
 
     moreCommentsButton.addEventListener('click', () => {
-      for (let y = 0; y < commentsPerClick && CommentsIterationCount < getObjects[i].comments.length; y++) {
+      for (let y = 0; y < commentsPerClick && commentsIterationCount < getObjects[i].comments.length; y++) {
         const comment = bigPictureCommentsTemplate.cloneNode(true);
-        comment.querySelector('img').src = getObjects[i].comments[CommentsIterationCount].avatar;
-        comment.querySelector('img').alt = getObjects[i].comments[CommentsIterationCount].name;
-        comment.querySelector('.social__text').textContent = getObjects[i].comments[CommentsIterationCount].message;
+        comment.querySelector('img').src = getObjects[i].comments[commentsIterationCount].avatar;
+        comment.querySelector('img').alt = getObjects[i].comments[commentsIterationCount].name;
+        comment.querySelector('.social__text').textContent = getObjects[i].comments[commentsIterationCount].message;
         bigPictureComments.appendChild(comment);
-        CommentsIterationCount += 1;
-        if (CommentsIterationCount === getObjects[i].comments.length) {
+        commentsIterationCount += 1;
+        if (commentsIterationCount === getObjects[i].comments.length) {
           moreCommentsButton.classList.add('hidden');
         }
-        bigPictureOpenCommentsCount.textContent = CommentsIterationCount;
+        bigPictureOpenCommentsCount.textContent = commentsIterationCount;
       }
     });
   });

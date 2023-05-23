@@ -14,6 +14,8 @@ const imgPreview = uploadImgForm.querySelector('.img-upload__preview img');
 const MAX_HASHTAG_COUNT = 5;
 const VALID_SYMBOLS = /^#[a-zа-яё0-9]{1,19}$/i;
 const TAG_ERROR_TEXT = 'Ошибка валидации';
+const MIN_SCALE_VALUE = 25;
+const MAX_SCALE_VALUE = 100;
 const pristine = new Pristine(uploadImgForm,
   {
     classTo: 'img-upload__field-wrapper',
@@ -47,22 +49,13 @@ uploadImgForm.addEventListener('input', (evt) => {
         hideModal();
       }
     }
-  });
+  }, {once:true});
 
   const preview = uploadImgForm.querySelector('.img-upload__preview img');
   const file = uploadImgForm.querySelector('#upload-file').files[0];
   const fileName = file.name.toLowerCase();
   const FILE_TYPES = ['jpg', 'jpeg', 'png'];
 
-  // Старая версия отображения загруженного фото
-  // const reader = new FileReader();
-  // reader.onloadend = () => {
-  //   preview.src = reader.result;
-  // };
-  //
-  // file ? reader.readAsDataURL(file) : preview.src = '';
-
-  // Новая версия из учебного проекта
   const matches = FILE_TYPES.some((it) => fileName.endsWith(it));
   if (matches) {
     preview.src = URL.createObjectURL(file);
@@ -89,7 +82,7 @@ pristine.addValidator(
   TAG_ERROR_TEXT
 );
 
-const onFormSubmit = (evt) => {
+const onFormSubmitHandler = (evt) => {
   evt.preventDefault();
   if (pristine.validate()) {
     sendData(new FormData(evt.target));
@@ -99,12 +92,12 @@ const onFormSubmit = (evt) => {
   }
 };
 
-uploadImgForm.addEventListener('submit', onFormSubmit);
+uploadImgForm.addEventListener('submit', onFormSubmitHandler);
 
-const makeScaleValueSmaller = () => {
-  let scaleValue = parseInt(scaleControlValue.value);
-  if (scaleValue < 25) {
-    scaleValue = 0;
+const scaleValueSmallerHandler = () => {
+  let scaleValue = parseInt(scaleControlValue.value, 10);
+  if (scaleValue < 50) {
+    scaleValue = MIN_SCALE_VALUE;
   } else {
     scaleValue -= 25;
   }
@@ -112,23 +105,23 @@ const makeScaleValueSmaller = () => {
   imgPreview.style.transform = `scale(0.${scaleValue})`;
 };
 
-const makeScaleValueBigger = () => {
-  let scaleValue = parseInt(scaleControlValue.value);
+const scaleValueBiggerHandler = () => {
+  let scaleValue = parseInt(scaleControlValue.value, 10);
   if (scaleValue > 75) {
-    scaleValue = 100;
+    scaleValue = MAX_SCALE_VALUE;
   } else {
     scaleValue += 25;
   }
   scaleControlValue.value = `${scaleValue}%`;
-  if (scaleValue === 100) {
+  if (scaleValue === MAX_SCALE_VALUE) {
     imgPreview.style.transform = 'scale(1)';
   } else {
     imgPreview.style.transform = `scale(0.${scaleValue})`;
   }
 };
 
-scaleControlSmaller.addEventListener('click', makeScaleValueSmaller);
-scaleControlBigger.addEventListener('click', makeScaleValueBigger);
+scaleControlSmaller.addEventListener('click', scaleValueSmallerHandler);
+scaleControlBigger.addEventListener('click', scaleValueBiggerHandler);
 
 const sliderContainer = uploadImgForm.querySelector('.img-upload__effect-level.effect-level');
 const slider = uploadImgForm.querySelector('.effect-level__slider');
@@ -237,7 +230,6 @@ document.querySelector('.effects').addEventListener('change', (evt) => {
     imgPreview.style.filter = `brightness(${slider.noUiSlider.get()})`;
     slider.noUiSlider.on('slide', () => {
       imgPreview.style.filter = `brightness(${slider.noUiSlider.get()})`;
-      // evt.target.value = slider.noUiSlider.get();
     });
     sliderContainer.classList.remove('hidden');
   }

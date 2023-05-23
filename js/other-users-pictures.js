@@ -1,5 +1,4 @@
 import {getData} from './api.js';
-// import {getRandomInteger} from './utils.js';
 
 const container = document.querySelector('.pictures.container');
 const template = document.querySelector('#picture').content;
@@ -17,7 +16,13 @@ const generateOtherUsersPhoto = (array) => {
   });
 };
 
-getData().then((data) => generateOtherUsersPhoto(data));
+getData().then((data) => generateOtherUsersPhoto(data)).then(() => {
+  container.onclick = function(evt) {
+    if (evt.target.className === 'picture__img') {
+      document.querySelector('.big-picture').classList.remove('hidden');
+    }
+  };
+});
 
 const defaultFilter = document.querySelector('#filter-default');
 const randomFilter = document.querySelector('#filter-random');
@@ -33,6 +38,14 @@ defaultFilter.addEventListener('click', () => {
     }).then(() => {
       container.querySelectorAll('a.picture').forEach((el) => el.remove());
       generateOtherUsersPhoto(dataPhoto);
+    }).then(() => {
+      container.onclick = (evt) => {
+        if (evt.target.className === 'picture') {
+          evt.target.addEventListener('click', () => {
+            document.querySelector('.big-picture').classList.remove('hidden');
+          });
+        }
+      };
     });
   }, 500);
 
@@ -43,19 +56,10 @@ defaultFilter.addEventListener('click', () => {
 
 randomFilter.addEventListener('click', () => {
   let dataPhoto = [];
-  // let index = 0;
   clearTimeout(timerIndex);
 
   timerIndex = setTimeout(() => {
     getData().then((data) => {
-      // старая версия сортировки
-      // for (let i = 0; i < 10; i++) {
-      //   index = getRandomInteger(0, data.length - 1);
-      //   dataPhoto.push(data[index]);
-      //   delete data.splice(index, 1);
-      // }
-
-      // новая версия из ретроспективы
       dataPhoto = [...data].sort(() => Math.random() - 0.5).slice(0, 10);
 
     }).then(() => {
@@ -76,7 +80,7 @@ discussedFilter.addEventListener('click', () => {
   timerIndex = setTimeout(() => {
     getData().then((data) => {
       dataPhoto.push(...data);
-      dataPhoto.sort((a, b) => b.likes - a.likes);
+      dataPhoto.sort((a, b) => b.comments.length - a.comments.length);
     }).then(() => {
       container.querySelectorAll('a.picture').forEach((el) => el.remove());
       generateOtherUsersPhoto(dataPhoto);

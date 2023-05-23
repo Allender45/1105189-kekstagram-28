@@ -1,4 +1,4 @@
-const DESCRIPTION = [
+const DESCRIPTIONS = [
   'Первое',
   'Второе',
   'Третье',
@@ -21,4 +21,4 @@ const NAMES = [
   'Милледи'
 ];
 
-export {DESCRIPTION, MESSAGES, NAMES};
+export {DESCRIPTIONS, MESSAGES, NAMES};

@@ -5,6 +5,7 @@ const showSuccessMessage = () => {
   const message = template.cloneNode(true);
   container.appendChild(message);
   const successButton = document.querySelector('.success__button');
+
   successButton.addEventListener('click', () => {
     document.querySelector('.success').remove();
   });
@@ -17,7 +18,9 @@ const showSuccessMessage = () => {
 
   window.addEventListener('click', (evt) => {
     if(evt.target !== message){
-      document.querySelector('.success').remove();
+      if (document.querySelector('.success')) {
+        document.querySelector('.success').remove();
+      }
     }
   }, {once:true});
 };

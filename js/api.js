@@ -13,12 +13,13 @@ const ErrorText = {
   SEND_DATA: 'Не удалось отправить данные'
 };
 
+
 const showFetchErrorMessage = async (error) => {
   const container = document.querySelector('body');
   const template = document.querySelector('#fetch-error').content;
   const message = template.cloneNode(true);
   container.appendChild(message);
-  document.querySelector('.error__title').innerHTML = error;
+  document.querySelector('.error__title').textContent = error;
   await delay(5000);
   container.removeChild(document.querySelector('.error'));
 };

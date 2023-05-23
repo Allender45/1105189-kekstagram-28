@@ -1,5 +1,5 @@
 import {getRandomInteger} from './utils.js';
-import {DESCRIPTION, MESSAGES, NAMES} from './data.js';
+import {DESCRIPTIONS, MESSAGES, NAMES} from './data.js';
 
 let id = 1;
 let commentId = 1;
@@ -20,7 +20,7 @@ const getArray = () => {
   const result = {
     id: id,
     url: `photos/${id}.jpg`,
-    description: DESCRIPTION[getRandomInteger(0, DESCRIPTION.length - 1)],
+    description: DESCRIPTIONS[getRandomInteger(0, DESCRIPTIONS.length - 1)],
     likes: getRandomInteger(15, 200),
     comments: Array.from({length: getRandomInteger(3, 8)}, getRandomComment)
   };
