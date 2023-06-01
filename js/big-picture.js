@@ -49,6 +49,7 @@ for (let i = 0; i < smallPictures.length; i++) {
       }
     });
 
+
     moreCommentsButton.addEventListener('click', () => {
       for (let y = 0; y < commentsPerClick && commentsIterationCount < getObjects[i].comments.length; y++) {
         const comment = bigPictureCommentsTemplate.cloneNode(true);
