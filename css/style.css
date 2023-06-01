@@ -1298,6 +1298,10 @@ main {
   opacity: 0.6;
 }
 
+.error_validation {
+  background-color: red;
+}
+
 
 /**
  * Экран загрузки изображения
