@@ -2,6 +2,7 @@ import {renderPhotos} from './other-users-pictures.js';
 import './big-picture.js';
 import './forms.js';
 import {getData} from './api.js';
+import './filters.js';
 
 let pictures = [];
 const ERROR_DELAY = 5000;
@@ -29,4 +30,4 @@ const onError = () => {
 
 getData(onSuccess, onError);
 
-export {onSuccess, onError};
+export {onSuccess, onError, pictures};

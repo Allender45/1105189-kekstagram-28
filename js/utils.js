@@ -1,3 +1,4 @@
+const DEBOUNCE_DELAY = 500;
 const getRandomInteger = (min, max) => {
   const lower = Math.ceil(Math.min(Math.abs(min), Math.abs(max)));
   const upper = Math.floor(Math.max(Math.abs(min), Math.abs(max)));
@@ -9,7 +10,7 @@ const delay = (ms) => new Promise((res) => {
   setTimeout(res, ms);
 });
 
-const debounce = (callback, timeoutDelay) => {
+const debounce = (callback, timeoutDelay = DEBOUNCE_DELAY) => {
   let timeoutId;
   return (...rest) => {
     clearTimeout(timeoutId);
