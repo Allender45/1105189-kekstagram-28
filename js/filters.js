@@ -1,9 +1,10 @@
 import {pictures} from './main.js';
 import {debounce} from './utils.js';
 import {renderPhotos} from './other-users-pictures.js';
-const ACTIVE_CLASS = 'img-filters__button--active';
 
+const ACTIVE_CLASS = 'img-filters__button--active';
 const filterForm = document.querySelector('.img-filters__form');
+
 const filterButtons = {
   'filter-default': () => pictures.slice(),
   'filter-random': () => pictures.sort(() => Math.random() - 0.5).slice(0, 10),

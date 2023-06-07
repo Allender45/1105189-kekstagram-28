@@ -1,5 +1,4 @@
 import {renderPhotos} from './other-users-pictures.js';
-import './big-picture.js';
 import './forms.js';
 import {getData} from './api.js';
 import './filters.js';
