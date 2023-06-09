@@ -6,8 +6,7 @@ const imgUploadOverlay = document.querySelector('.img-upload__overlay');
 const body = document.querySelector('body');
 const hashtagField = uploadImgForm.querySelector('.text__hashtags');
 const commentField = uploadImgForm.querySelector('.text__description');
-const scaleControlSmaller = uploadImgForm.querySelector('.scale__control--smaller');
-const scaleControlBigger = uploadImgForm.querySelector('.scale__control--bigger');
+const scaleControl = uploadImgForm.querySelector('.img-upload__scale');
 const scaleControlValue = uploadImgForm.querySelector('.scale__control--value');
 const imgPreview = uploadImgForm.querySelector('.img-upload__preview img');
 
@@ -16,6 +15,7 @@ const VALID_SYMBOLS = /^#[a-zа-яё0-9]{1,19}$/i;
 const TAG_ERROR_TEXT = 'Ошибка валидации';
 const MIN_SCALE_VALUE = 25;
 const MAX_SCALE_VALUE = 100;
+const SCALE_VALUE_STEP = 25;
 const pristine = new Pristine(uploadImgForm,
   {
     classTo: 'img-upload__field-wrapper',
@@ -72,7 +72,7 @@ const hasUniqueTags = (tags) => {
 };
 
 const validateTags = (value) => {
-  const tags = value.trim().split(' ').filter((tag) => tag.trim().length);
+  const tags = value.trim().split(/\s+/);
   return hasValidCount(tags) && hasUniqueTags(tags) && tags.every(isValidTag);
 };
 
@@ -94,34 +94,28 @@ const onFormSubmitHandler = (evt) => {
 
 uploadImgForm.addEventListener('submit', onFormSubmitHandler);
 
-const scaleValueSmallerHandler = () => {
-  let scaleValue = parseInt(scaleControlValue.value, 10);
-  if (scaleValue < 50) {
-    scaleValue = MIN_SCALE_VALUE;
-  } else {
-    scaleValue -= 25;
-  }
-  scaleControlValue.value = `${scaleValue}%`;
-  imgPreview.style.transform = `scale(0.${scaleValue})`;
-};
-
-const scaleValueBiggerHandler = () => {
-  let scaleValue = parseInt(scaleControlValue.value, 10);
-  if (scaleValue > 75) {
-    scaleValue = MAX_SCALE_VALUE;
-  } else {
-    scaleValue += 25;
-  }
-  scaleControlValue.value = `${scaleValue}%`;
-  if (scaleValue === MAX_SCALE_VALUE) {
+const valueChange = (mod = 1) => {
+  scaleControlValue.value = `${parseInt(scaleControlValue.value) + SCALE_VALUE_STEP * mod}%`;
+  imgPreview.style.transform = `scale(0.${parseInt(scaleControlValue.value)})`;
+  if(parseInt(scaleControlValue.value) >= MAX_SCALE_VALUE){
+    scaleControlValue.value = `${MAX_SCALE_VALUE}%`;
     imgPreview.style.transform = 'scale(1)';
-  } else {
-    imgPreview.style.transform = `scale(0.${scaleValue})`;
+  }
+  if(parseInt(scaleControlValue.value) <= MIN_SCALE_VALUE){
+    scaleControlValue.value = `${MIN_SCALE_VALUE}%`;
+    imgPreview.style.transform = `scale(0.${MIN_SCALE_VALUE})`;
   }
 };
 
-scaleControlSmaller.addEventListener('click', scaleValueSmallerHandler);
-scaleControlBigger.addEventListener('click', scaleValueBiggerHandler);
+const imageScaleValueHandler = (evt) => {
+  if(evt.target.classList.contains('scale__control--smaller')){
+    valueChange(-1);
+  } else {
+    valueChange();
+  }
+};
+
+scaleControl.addEventListener('click', imageScaleValueHandler);
 
 const sliderContainer = uploadImgForm.querySelector('.img-upload__effect-level.effect-level');
 const slider = uploadImgForm.querySelector('.effect-level__slider');

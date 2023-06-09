@@ -13,22 +13,26 @@ const filterButtons = {
 
 const removePhotos = () => {
   const photos = document.querySelectorAll('a.picture');
-  if(photos){
+  if (photos) {
     photos.forEach((el) => el.remove());
   }
 };
 
-const onFilterFormClick = (evt) => {
+const onFilterFormChangeActive = (evt) => {
   if (evt.target.classList.contains('img-filters__button')) {
 
     const activeButton = filterForm.querySelector(`.${ACTIVE_CLASS}`);
     activeButton.classList.remove(ACTIVE_CLASS);
     evt.target.classList.add(ACTIVE_CLASS);
-    debounce(() => {
-      removePhotos();
-      renderPhotos(filterButtons[evt.target.id]());
-    })();
   }
 };
 
-filterForm.addEventListener('click', onFilterFormClick);
+const onFilterFormRenderPhotos = debounce((evt) => {
+  if (evt.target.classList.contains('img-filters__button')) {
+    removePhotos();
+    renderPhotos(filterButtons[evt.target.id]());
+  }
+});
+
+filterForm.addEventListener('click', onFilterFormChangeActive);
+filterForm.addEventListener('click', onFilterFormRenderPhotos);
