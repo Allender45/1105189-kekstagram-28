@@ -13,7 +13,7 @@ const sliderContainer = uploadImgForm.querySelector('.img-upload__effect-level.e
 const slider = uploadImgForm.querySelector('.effect-level__slider');
 
 const MAX_HASHTAG_COUNT = 5;
-const VALID_SYMBOLS = /^#[a-zа-яё0-9\s]{2,19}$/i;
+const VALID_SYMBOLS = /^#[a-zа-яё0-9]{2,19}$/i;
 const TAG_ERROR_TEXT = 'Ошибка валидации';
 const MIN_SCALE_VALUE = 25;
 const MAX_SCALE_VALUE = 100;
@@ -76,10 +76,11 @@ const hasUniqueTags = (tags) => {
 };
 
 const validateTags = (value) => {
-  if (value !== '') {
+  if (value !== '' && !/\s/.test(value)) {
     const tags = value.trim().split(/\s+/);
     return hasValidCount(tags) && hasUniqueTags(tags) && tags.every(isValidTag);
-  } else {
+  }
+  if (/\s/.test(value)) {
     return true;
   }
 };
