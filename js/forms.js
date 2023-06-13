@@ -76,11 +76,11 @@ const hasUniqueTags = (tags) => {
 };
 
 const validateTags = (value) => {
-  if (value !== '' && !/\s/.test(value)) {
+  if (value.trim().length !== 0) {
     const tags = value.trim().split(/\s+/);
     return hasValidCount(tags) && hasUniqueTags(tags) && tags.every(isValidTag);
   }
-  if (/\s/.test(value)) {
+  if (value.trim().length === 0) {
     return true;
   }
 };
