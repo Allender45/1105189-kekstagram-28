@@ -57,6 +57,7 @@ const showBigPicture = (picture) => {
   bigPictureCommentsLoader.addEventListener('click', onBigPictureLoaderClick);
 
   bigPictureCancel.addEventListener('click', () => {
+    document.querySelector('.img-upload__preview img').removeAttribute('style');
     bigPicture.classList.add('hidden');
     document.body.classList.remove('modal-open');
     bigPictureCommentsLoader.removeEventListener('click', onBigPictureLoaderClick);
@@ -64,6 +65,7 @@ const showBigPicture = (picture) => {
 
   document.querySelector('body').addEventListener('keydown', (evt) => {
     if (evt.key === 'Escape') {
+      document.querySelector('.img-upload__preview img').removeAttribute('style');
       bigPicture.classList.add('hidden');
       document.body.classList.remove('modal-open');
       bigPictureCommentsLoader.removeEventListener('click', onBigPictureLoaderClick);

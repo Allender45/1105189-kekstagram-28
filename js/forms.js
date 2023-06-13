@@ -9,9 +9,11 @@ const commentField = uploadImgForm.querySelector('.text__description');
 const scaleControl = uploadImgForm.querySelector('.img-upload__scale');
 const scaleControlValue = uploadImgForm.querySelector('.scale__control--value');
 const imgPreview = uploadImgForm.querySelector('.img-upload__preview img');
+const sliderContainer = uploadImgForm.querySelector('.img-upload__effect-level.effect-level');
+const slider = uploadImgForm.querySelector('.effect-level__slider');
 
 const MAX_HASHTAG_COUNT = 5;
-const VALID_SYMBOLS = /^#[a-zа-яё0-9]{1,19}$/i;
+const VALID_SYMBOLS = /^#[a-zа-яё0-9\s]{2,19}$/i;
 const TAG_ERROR_TEXT = 'Ошибка валидации';
 const MIN_SCALE_VALUE = 25;
 const MAX_SCALE_VALUE = 100;
@@ -30,6 +32,8 @@ const hideModal = () => {
   uploadImgForm.reset();
   pristine.reset();
   imgPreview.style.transform = 'scale(1)';
+  imgPreview.removeAttribute('style');
+  sliderContainer.classList.add('hidden');
 };
 
 uploadImgForm.addEventListener('input', (evt) => {
@@ -72,8 +76,12 @@ const hasUniqueTags = (tags) => {
 };
 
 const validateTags = (value) => {
-  const tags = value.trim().split(/\s+/);
-  return hasValidCount(tags) && hasUniqueTags(tags) && tags.every(isValidTag);
+  if (value !== '') {
+    const tags = value.trim().split(/\s+/);
+    return hasValidCount(tags) && hasUniqueTags(tags) && tags.every(isValidTag);
+  } else {
+    return true;
+  }
 };
 
 pristine.addValidator(
@@ -97,28 +105,19 @@ uploadImgForm.addEventListener('submit', onFormSubmitHandler);
 const valueChange = (mod = 1) => {
   scaleControlValue.value = `${parseInt(scaleControlValue.value) + SCALE_VALUE_STEP * mod}%`;
   imgPreview.style.transform = `scale(0.${parseInt(scaleControlValue.value)})`;
-  if(parseInt(scaleControlValue.value) >= MAX_SCALE_VALUE){
+  if (parseInt(scaleControlValue.value) >= MAX_SCALE_VALUE) {
     scaleControlValue.value = `${MAX_SCALE_VALUE}%`;
     imgPreview.style.transform = 'scale(1)';
   }
-  if(parseInt(scaleControlValue.value) <= MIN_SCALE_VALUE){
+  if (parseInt(scaleControlValue.value) <= MIN_SCALE_VALUE) {
     scaleControlValue.value = `${MIN_SCALE_VALUE}%`;
     imgPreview.style.transform = `scale(0.${MIN_SCALE_VALUE})`;
   }
 };
 
-const imageScaleValueHandler = (evt) => {
-  if(evt.target.classList.contains('scale__control--smaller')){
-    valueChange(-1);
-  } else {
-    valueChange();
-  }
-};
+const imageScaleValueHandler = (evt) => evt.target.classList.contains('scale__control--smaller') ? valueChange(-1) : valueChange();
 
 scaleControl.addEventListener('click', imageScaleValueHandler);
-
-const sliderContainer = uploadImgForm.querySelector('.img-upload__effect-level.effect-level');
-const slider = uploadImgForm.querySelector('.effect-level__slider');
 
 noUiSlider.create(slider, {
   start: 20,
