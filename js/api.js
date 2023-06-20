@@ -11,8 +11,8 @@ const load = (onSuccess, onError, method = 'GET', body = null) =>
       }
       return response.json();
     }).then((data) => onSuccess(data))
-    .catch((error) => {
-      onError(error);
+    .catch(() => {
+      onError('Ошибка загрузки');
     });
 
 const getData = (onSuccess, onError) => load(onSuccess, onError);
@@ -20,4 +20,3 @@ const getData = (onSuccess, onError) => load(onSuccess, onError);
 const sendData = (onSuccess, onError, data) => load(onSuccess, onError,'POST', data);
 
 export {getData, sendData, load};
-

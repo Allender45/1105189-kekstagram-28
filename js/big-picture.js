@@ -57,7 +57,7 @@ const showBigPicture = (picture) => {
   bigPictureCommentsLoader.addEventListener('click', onBigPictureLoaderClick);
 
   bigPictureCancel.addEventListener('click', () => {
-    document.querySelector('.img-upload__preview img').removeAttribute('style');
+    document.querySelector('.img-upload__preview img').remoeAttribute('style');
     bigPicture.classList.add('hidden');
     document.body.classList.remove('modal-open');
     bigPictureCommentsLoader.removeEventListener('click', onBigPictureLoaderClick);

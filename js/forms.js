@@ -1,5 +1,6 @@
 import {sendData} from './api.js';
 import {showSuccessMessage} from './success-send-form.js';
+import {pristine} from './hashtag-validation.js';
 
 const uploadImgForm = document.querySelector('.img-upload__form');
 const imgUploadOverlay = document.querySelector('.img-upload__overlay');
@@ -12,20 +13,11 @@ const imgPreview = uploadImgForm.querySelector('.img-upload__preview img');
 const sliderContainer = uploadImgForm.querySelector('.img-upload__effect-level.effect-level');
 const slider = uploadImgForm.querySelector('.effect-level__slider');
 
-const MAX_HASHTAG_COUNT = 5;
-const VALID_SYMBOLS = /^#[a-zа-яё0-9]{2,19}$/i;
-const TAG_ERROR_TEXT = 'Ошибка валидации';
+const ERROR_DELAY = 5000;
 const MIN_SCALE_VALUE = 25;
 const MAX_SCALE_VALUE = 100;
 const SCALE_VALUE_STEP = 25;
-const pristine = new Pristine(uploadImgForm,
-  {
-    classTo: 'img-upload__field-wrapper',
-    errorTextParent: 'img-upload__field-wrapper',
-    errorTextTag: 'span',
-    errorTextClass: 'error_validation'
-  }
-);
+
 const hideModal = () => {
   imgUploadOverlay.classList.add('hidden');
   body.classList.remove('modal-open');
@@ -66,54 +58,45 @@ uploadImgForm.addEventListener('input', (evt) => {
   }
 });
 
-const isValidTag = (tag) => VALID_SYMBOLS.test(tag);
-
-const hasValidCount = (value) => value.length <= MAX_HASHTAG_COUNT;
-
-const hasUniqueTags = (tags) => {
-  const lowerCaseTags = tags.map((tag) => tag.toLowerCase());
-  return lowerCaseTags.length === new Set(lowerCaseTags).size;
+const onSuccess = () => {
+  hideModal();
+  imgPreview.removeAttribute('style');
+  showSuccessMessage();
 };
 
-const validateTags = (value) => {
-  if (value.trim().length !== 0) {
-    const tags = value.trim().split(/\s+/);
-    return hasValidCount(tags) && hasUniqueTags(tags) && tags.every(isValidTag);
-  }
-  if (value.trim().length === 0) {
-    return true;
-  }
-};
+const onError = () => {
+  const container = document.querySelector('body');
+  const template = document.querySelector('#fetch-error').content;
+  const message = template.cloneNode(true);
+  container.appendChild(message);
+  document.querySelector('.error__title').textContent = 'Не удалось отправить фото';
 
-pristine.addValidator(
-  hashtagField,
-  validateTags,
-  TAG_ERROR_TEXT
-);
+  setTimeout(() => {
+    container.querySelector('.error').remove();
+  }, ERROR_DELAY);
+};
 
 const onFormSubmitHandler = (evt) => {
   evt.preventDefault();
   if (pristine.validate()) {
-    sendData(new FormData(evt.target));
-    hideModal();
-    imgPreview.removeAttribute('style');
-    showSuccessMessage();
+    sendData(onSuccess, onError, new FormData(evt.target));
   }
 };
 
 uploadImgForm.addEventListener('submit', onFormSubmitHandler);
 
 const valueChange = (mod = 1) => {
-  scaleControlValue.value = `${parseInt(scaleControlValue.value) + SCALE_VALUE_STEP * mod}%`;
-  imgPreview.style.transform = `scale(0.${parseInt(scaleControlValue.value)})`;
-  if (parseInt(scaleControlValue.value) >= MAX_SCALE_VALUE) {
-    scaleControlValue.value = `${MAX_SCALE_VALUE}%`;
-    imgPreview.style.transform = 'scale(1)';
+  const inputValue = parseInt(scaleControlValue.value, 10);
+  let newValue = inputValue + SCALE_VALUE_STEP * mod;
+
+  if (newValue >= MAX_SCALE_VALUE) {
+    newValue = MAX_SCALE_VALUE;
   }
-  if (parseInt(scaleControlValue.value) <= MIN_SCALE_VALUE) {
-    scaleControlValue.value = `${MIN_SCALE_VALUE}%`;
-    imgPreview.style.transform = `scale(0.${MIN_SCALE_VALUE})`;
+  if (newValue <= MIN_SCALE_VALUE) {
+    newValue = MIN_SCALE_VALUE;
   }
+  imgPreview.style.transform = `scale(${newValue * 0.01})`;
+  scaleControlValue.value = `${newValue}%`;
 };
 
 const imageScaleValueHandler = (evt) => evt.target.classList.contains('scale__control--smaller') ? valueChange(-1) : valueChange();

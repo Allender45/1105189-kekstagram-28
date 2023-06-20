@@ -15,12 +15,12 @@ const onSuccess = (data) => {
   });
 };
 
-const onError = () => {
+const onError = (errorText) => {
   const container = document.querySelector('body');
   const template = document.querySelector('#fetch-error').content;
   const message = template.cloneNode(true);
   container.appendChild(message);
-  document.querySelector('.error__title').textContent = 'Ошибка получения данных';
+  document.querySelector('.error__title').textContent = errorText;
 
   setTimeout(() => {
     container.querySelector('.error').remove();
