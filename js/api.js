@@ -1,6 +1,6 @@
 const Urls = {
   GET: 'https://28.javascript.pages.academy/kekstagram/data',
-  POST: 'https://28.javascript.pages.academy/kekstagram/'
+  POST: 'https://28.javascript.pages.academy/kekstagram/1'
 };
 
 const load = (onSuccess, onError, method = 'GET', body = null) =>

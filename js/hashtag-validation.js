@@ -1,7 +1,7 @@
 const uploadImgForm = document.querySelector('.img-upload__form');
 const hashtagField = uploadImgForm.querySelector('.text__hashtags');
 const MAX_HASHTAG_COUNT = 5;
-const VALID_SYMBOLS = /^#[a-zа-яё0-9]{2,19}$/i;
+const VALID_SYMBOLS = /^#[a-zа-яё0-9]{1,19}$/i;
 const MAX_SYMBOLS = 20;
 let errorMessage = '';
 const error = () => errorMessage;

@@ -13,7 +13,6 @@ const imgPreview = uploadImgForm.querySelector('.img-upload__preview img');
 const sliderContainer = uploadImgForm.querySelector('.img-upload__effect-level.effect-level');
 const slider = uploadImgForm.querySelector('.effect-level__slider');
 
-const ERROR_DELAY = 5000;
 const MIN_SCALE_VALUE = 25;
 const MAX_SCALE_VALUE = 100;
 const SCALE_VALUE_STEP = 25;
@@ -66,14 +65,13 @@ const onSuccess = () => {
 
 const onError = () => {
   const container = document.querySelector('body');
-  const template = document.querySelector('#fetch-error').content;
+  const template = document.querySelector('#error').content;
   const message = template.cloneNode(true);
   container.appendChild(message);
-  document.querySelector('.error__title').textContent = 'Не удалось отправить фото';
 
-  setTimeout(() => {
+  container.querySelector('.error__button').addEventListener('click', () => {
     container.querySelector('.error').remove();
-  }, ERROR_DELAY);
+  }, {once:true});
 };
 
 const onFormSubmitHandler = (evt) => {

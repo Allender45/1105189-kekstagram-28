@@ -16,7 +16,7 @@ const showSuccessMessage = () => {
     }
   }, {once:true});
 
-  window.addEventListener('click', (evt) => {
+  document.addEventListener('click', (evt) => {
     if(evt.target !== message){
       if (document.querySelector('.success')) {
         document.querySelector('.success').remove();
