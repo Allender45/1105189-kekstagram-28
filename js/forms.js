@@ -27,6 +27,17 @@ const hideModal = () => {
   sliderContainer.classList.add('hidden');
 };
 
+const onFormEscHandler = (evt) => {
+  if (!document.querySelector('.error')) {
+    if (evt.key === 'Escape') {
+      if (!(document.activeElement === hashtagField ||
+        document.activeElement === commentField)) {
+        hideModal();
+      }
+    }
+  }
+};
+
 uploadImgForm.addEventListener('input', (evt) => {
   evt.preventDefault();
 
@@ -37,14 +48,7 @@ uploadImgForm.addEventListener('input', (evt) => {
     hideModal();
   });
 
-  document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape') {
-      if (!(document.activeElement === hashtagField ||
-        document.activeElement === commentField)) {
-        hideModal();
-      }
-    }
-  }, {once: true});
+  document.addEventListener('keydown', onFormEscHandler);
 
   const preview = uploadImgForm.querySelector('.img-upload__preview img');
   const file = uploadImgForm.querySelector('#upload-file').files[0];
@@ -69,9 +73,19 @@ const onError = () => {
   const message = template.cloneNode(true);
   container.appendChild(message);
 
-  container.querySelector('.error__button').addEventListener('click', () => {
-    container.querySelector('.error').remove();
-  }, {once:true});
+  const onFormSendErrorEscHandler = (evt) => {
+    if (evt.key === 'Escape') {
+      container.querySelector('.error').remove();
+    }
+  };
+
+  document.addEventListener('click', (evt) => {
+    if (evt.target === document.querySelector('.error__button') || evt.target !== document.querySelector('.error__inner')) {
+      container.querySelector('.error').remove();
+    }
+  }, {once: true});
+
+  document.addEventListener('keydown', onFormSendErrorEscHandler);
 };
 
 const onFormSubmitHandler = (evt) => {
