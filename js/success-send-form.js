@@ -6,23 +6,25 @@ const showSuccessMessage = () => {
   container.appendChild(message);
   const successButton = document.querySelector('.success__button');
 
-  successButton.addEventListener('click', () => {
+  const onSuccessButtonHandler = () => {
     document.querySelector('.success').remove();
-  });
-
-  document.addEventListener('keydown', (evt) => {
+  };
+  const onSuccessButtonEscHandler = (evt) => {
     if (evt.key === 'Escape') {
       document.querySelector('.success').remove();
     }
-  }, {once:true});
-
-  document.addEventListener('click', (evt) => {
+  };
+  const onSuccessButtonExtHandler = (evt) => {
     if(evt.target !== message){
       if (document.querySelector('.success')) {
         document.querySelector('.success').remove();
       }
     }
-  }, {once:true});
+  };
+
+  successButton.addEventListener('click', onSuccessButtonHandler);
+  document.addEventListener('keydown', onSuccessButtonEscHandler, {once:true});
+  document.addEventListener('click', onSuccessButtonExtHandler, {once:true});
 };
 
 export {showSuccessMessage};

@@ -37,8 +37,7 @@ const onFormEscHandler = (evt) => {
     }
   }
 };
-
-uploadImgForm.addEventListener('input', (evt) => {
+const onUploadImgFormHandler = (evt) => {
   evt.preventDefault();
 
   imgUploadOverlay.classList.remove('hidden');
@@ -59,7 +58,9 @@ uploadImgForm.addEventListener('input', (evt) => {
   if (matches) {
     preview.src = URL.createObjectURL(file);
   }
-});
+};
+
+uploadImgForm.addEventListener('input', onUploadImgFormHandler);
 
 const onSuccess = () => {
   hideModal();
@@ -78,14 +79,15 @@ const onError = () => {
       container.querySelector('.error').remove();
     }
   };
-
-  document.addEventListener('click', (evt) => {
+  const onFormSendErrorHandler = (evt) => {
     if (evt.target === document.querySelector('.error__button') || evt.target !== document.querySelector('.error__inner')) {
       container.querySelector('.error').remove();
     }
-  }, {once: true});
+  };
 
-  document.addEventListener('keydown', onFormSendErrorEscHandler);
+  document.addEventListener('click', onFormSendErrorHandler, {once: true});
+
+  document.addEventListener('keydown', onFormSendErrorEscHandler, {once: true});
 };
 
 const onFormSubmitHandler = (evt) => {
@@ -185,7 +187,7 @@ const addFilterEffects = (effect) => {
   sliderContainer.classList.remove('hidden');
 };
 
-document.querySelector('.effects__list').addEventListener('click', (evt) => {
+const onEffectListHandler = (evt) => {
   if (evt.target.classList.contains('effects__radio')) {
     if (evt.target.classList[2] === 'effects__preview--none') {
       sliderContainer.classList.add('hidden');
@@ -194,4 +196,6 @@ document.querySelector('.effects__list').addEventListener('click', (evt) => {
       addFilterEffects(FILTER_EFFECTS[evt.target.classList[2]]);
     }
   }
-});
+};
+
+document.querySelector('.effects__list').addEventListener('click', onEffectListHandler);

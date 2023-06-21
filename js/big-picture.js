@@ -42,7 +42,7 @@ const showBigPicture = (picture) => {
     bigPictureCommentsLoader.classList.add('hidden');
   }
 
-  const onBigPictureLoaderClick = () => {
+  const onBigPictureLoaderClickHandler = () => {
     bigPictureComments.innerHTML = '';
     openCommentsCount = currentComments.length + COMMENTS_COUNT > picture.comments.length ? picture.comments.length : currentComments.length + COMMENTS_COUNT;
     currentComments = picture.comments.slice(0, openCommentsCount);
@@ -53,24 +53,24 @@ const showBigPicture = (picture) => {
     }
     renderComments(currentComments);
   };
-
-  bigPictureCommentsLoader.addEventListener('click', onBigPictureLoaderClick);
-
-  bigPictureCancel.addEventListener('click', () => {
-    document.querySelector('.img-upload__preview img').remoeAttribute('style');
+  const onBigPictureCancelHandler = () => {
+    document.querySelector('.img-upload__preview img').removeAttribute('style');
     bigPicture.classList.add('hidden');
     document.body.classList.remove('modal-open');
-    bigPictureCommentsLoader.removeEventListener('click', onBigPictureLoaderClick);
-  });
-
-  document.querySelector('body').addEventListener('keydown', (evt) => {
+    bigPictureCommentsLoader.removeEventListener('click', onBigPictureLoaderClickHandler);
+  };
+  const onBigPictureEscHandler = (evt) => {
     if (evt.key === 'Escape') {
       document.querySelector('.img-upload__preview img').removeAttribute('style');
       bigPicture.classList.add('hidden');
       document.body.classList.remove('modal-open');
-      bigPictureCommentsLoader.removeEventListener('click', onBigPictureLoaderClick);
+      bigPictureCommentsLoader.removeEventListener('click', onBigPictureLoaderClickHandler);
     }
-  });
+  };
+
+  bigPictureCommentsLoader.addEventListener('click', onBigPictureLoaderClickHandler);
+  bigPictureCancel.addEventListener('click', onBigPictureCancelHandler);
+  document.querySelector('body').addEventListener('keydown', onBigPictureEscHandler);
 };
 
 export {showBigPicture};
