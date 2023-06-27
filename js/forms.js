@@ -88,9 +88,9 @@ const onError = () => {
     }
   }
 
-  document.addEventListener('click', onFormSendErrorHandler, {once: true});
+  document.addEventListener('click', onFormSendErrorHandler);
 
-  document.addEventListener('keydown', onFormSendErrorEscHandler, {once: true});
+  document.addEventListener('keydown', onFormSendErrorEscHandler);
 };
 
 const onFormSubmitHandler = (evt) => {
