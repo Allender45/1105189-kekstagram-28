@@ -19,5 +19,4 @@ const getData = (onSuccess, onError) => load(onSuccess, onError);
 
 const sendData = (onSuccess, onError, data) => load(onSuccess, onError,'POST', data);
 
-
 export {getData, sendData, load};
