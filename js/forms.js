@@ -74,18 +74,19 @@ const onError = () => {
   const message = template.cloneNode(true);
   container.appendChild(message);
 
-  const onFormSendErrorEscHandler = (evt) => {
+  function onFormSendErrorEscHandler(evt){
     if (evt.key === 'Escape') {
       container.querySelector('.error').remove();
       document.removeEventListener('click', onFormSendErrorHandler);
     }
-  };
-  const onFormSendErrorHandler = (evt) => {
+  }
+
+  function onFormSendErrorHandler(evt){
     if (evt.target === document.querySelector('.error__button') || evt.target !== document.querySelector('.error__inner')) {
       container.querySelector('.error').remove();
       document.removeEventListener('keydown', onFormSendErrorEscHandler);
     }
-  };
+  }
 
   document.addEventListener('click', onFormSendErrorHandler, {once: true});
 
