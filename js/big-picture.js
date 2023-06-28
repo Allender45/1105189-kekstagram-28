@@ -24,6 +24,8 @@ const renderComments = (array) => {
 };
 
 const showBigPicture = (picture) => {
+  document.querySelector('body').classList.add('modal-open');
+
   currentComments = picture.comments.slice(0, COMMENTS_COUNT);
 
   bigPicture.classList.remove('hidden');

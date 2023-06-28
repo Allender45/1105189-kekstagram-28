@@ -1,9 +1,9 @@
 import {renderPhotos} from './other-users-pictures.js';
-import './image_preview_form.js';
+import './image-preview-form.js';
 import {getData} from './api.js';
-import './sorting_filters.js';
-import './scale_image.js';
-import './image_effects_slider.js';
+import './sorting-filters.js';
+import './scale-image.js';
+import './image-effects-slider.js';
 
 let pictures = [];
 const ERROR_DELAY = 5000;

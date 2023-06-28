@@ -82,7 +82,7 @@ const onError = () => {
     }
   }
 
-  document.addEventListener('click', onFormSendErrorHandler);
+  document.querySelector('.error').addEventListener('click', onFormSendErrorHandler);
 
   document.addEventListener('keydown', onFormSendErrorEscHandler);
 };
